@@ -4,19 +4,19 @@ import {compose, pipe} from "ramda"
 
 export class Validator<T> {
 
-    exceptions: Array<string>;
-    obj: T;
+    private readonly exceptions: Array<string>;
+    private readonly obj: T;
 
     private constructor(obj: T) {
         this.exceptions = new Array<string>();
         this.obj = obj;
     }
 
-    static of<T>(t: T) {
+    static of<T>(t: T): Validator<T> {
         return new Validator(t);
     }
 
-    public mapAndValidate(projection: (item: T) => any, validation: (obj: any) => boolean, message: string) {
+    public mapAndValidate(projection: <T, R> (item: T) => R, validation: <R> (obj: R) => boolean, message: string): Validator<T> {
         return this.validate(pipe(projection, validation), message);
     }
 
@@ -27,7 +27,7 @@ export class Validator<T> {
         return this;
     }
 
-    public get() {
+    public get(): T | Array<string> {
         if (this.exceptions.length === 0) {
             return this.obj;
         }
