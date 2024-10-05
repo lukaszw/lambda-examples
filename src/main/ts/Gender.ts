@@ -1,6 +1,6 @@
 /*
 * */
-export enum Grnder {
+export enum Gender {
     MALE,
     FEMALE
 }
